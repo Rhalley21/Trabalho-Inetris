@@ -1,0 +1,360 @@
+:root {
+  --color-bg: #14173d;
+  --color-ink: #ffffff;
+  --color-title: #caa228;
+  --color-muted: #5c6b82;
+  --color-accent: #caa228;
+  --color-border: #e5e7eb;
+  --header-height: 100px;
+  --transition: 200ms ease;
+}
+#titulos {
+  color: var(--color-title);
+  font-family: "Ubuntu", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: "Ubuntu", sans-serif;
+  background-color: var(--color-bg);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--color-ink);
+}
+
+/* ===== Header ===== */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: var(--header-height);
+  padding: 0 clamp(1rem, 4vw, 3rem);
+  background: var(--color-bg);
+}
+
+header .logo img {
+  height: 100px;
+  width: auto;
+  display: block;
+}
+
+header nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+header nav ul li a {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  color: var(--color-ink);
+  font-weight: 500;
+  font-size: 1.3rem;
+  padding: 0.25rem 0.1rem;
+}
+
+header nav ul li a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background: var(--color-accent);
+  transition: width var(--transition);
+}
+
+header nav ul li a:hover::after,
+header nav ul li a:focus-visible::after {
+  width: 100%;
+}
+
+header nav ul li a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* Botão hambúrguer (criado dinamicamente pelo script.js) */
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 1.6rem;
+  line-height: 0;
+  color: var(--color-ink);
+}
+
+.nav-toggle:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Fundo escurecido (criado dinamicamente pelo script.js) */
+.nav-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+  z-index: 100;
+}
+
+.nav-backdrop.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ===== Mobile (até 768px): nav vira painel deslizante ===== */
+@media (max-width: 768px) {
+  .nav-toggle {
+    display: flex;
+  }
+
+  header nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: min(300px, 80%);
+    background: var(--color-bg);
+    box-shadow: -12px 0 32px rgba(15, 23, 42, 0.12);
+    transform: translateX(100%);
+    transition: transform var(--transition);
+    padding: calc(var(--header-height) + 1.5rem) 1.5rem 2rem;
+    z-index: 101;
+  }
+
+  header nav.is-open {
+    transform: translateX(0);
+  }
+
+  header nav ul {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+}
+
+/* ===== Desktop (≥769px): nav em linha, ao lado do logo ===== */
+@media (min-width: 769px) {
+  header nav ul {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 2vw, 2.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  header nav,
+  .nav-backdrop,
+  header nav ul li a::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===== Apoio ao conteúdo já existente no HTML ===== */
+main section {
+  font-size: 1.3rem;
+  padding: 3rem clamp(1rem, 4vw, 3rem);
+}
+
+#sobre {
+  display: flex;
+}
+#servicos {
+  display: flex;
+}
+#ajudamos {
+  display: flex;
+}
+#imagem {
+  height: 30rem;
+  width: auto;
+  border-radius: 12px;
+  border: 2px solid var(--color-accent);
+  box-shadow:
+    0 0 0 4px rgba(202, 162, 40, 0.15),
+    0 8px 32px rgba(0, 0, 0, 0.4);
+  object-fit: cover;
+  max-width: 100%;
+  transition: box-shadow var(--transition), border-color var(--transition);
+}
+
+#imagem:hover {
+  box-shadow:
+    0 0 0 5px rgba(202, 162, 40, 0.3),
+    0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Responsividade das imagens */
+@media (max-width: 768px) {
+  #imagem {
+    height: auto;
+    width: 100%;
+    max-height: 22rem;
+    border-radius: 10px;
+  }
+
+  #sobre,
+  #ajudamos,
+  #servicos {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  #imagem {
+    height: 22rem;
+    max-width: 45%;
+  }
+}
+
+@media (min-width: 1025px) {
+  #imagem {
+    height: 30rem;
+    max-width: 50%;
+  }
+}
+
+/* ===== Seção de Contato ===== */
+#contato {
+  border-top: 1px solid rgba(202, 162, 40, 0.25);
+  padding: 4rem clamp(1rem, 6vw, 5rem) 3rem !important;
+}
+
+.contato-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  background-color: transparent;
+}
+
+.contato-texto {
+  flex: 1;
+  background-color: transparent;
+}
+
+.contato-titulo {
+  color: var(--color-title);
+  font-family: "Ubuntu", sans-serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+  background-color: transparent;
+}
+
+.contato-subtitulo {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.7;
+  margin: 0;
+  max-width: 42ch;
+  background-color: transparent;
+}
+
+.redes-sociais {
+  display: flex;
+  gap: 1rem;
+  flex-shrink: 0;
+  background-color: transparent;
+}
+
+.rede-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--color-ink);
+  background-color: transparent;
+  border: 1px solid rgba(202, 162, 40, 0.35);
+  border-radius: 12px;
+  padding: 1.1rem 1.5rem;
+  transition:
+    color var(--transition),
+    border-color var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition);
+  min-width: 90px;
+}
+
+.rede-item:hover,
+.rede-item:focus-visible {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(202, 162, 40, 0.15), 0 6px 20px rgba(0, 0, 0, 0.3);
+  transform: translateY(-3px);
+}
+
+.rede-icone {
+  font-size: 2rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+}
+
+.rede-nome {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background-color: transparent;
+}
+
+/* Mobile: empilha texto acima dos ícones */
+@media (max-width: 768px) {
+  .contato-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+
+  .redes-sociais {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .rede-item {
+    flex: 1;
+    min-width: unset;
+    padding: 1rem 0.75rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .rede-nome {
+    display: none;
+  }
+
+  .rede-item {
+    padding: 1rem;
+    border-radius: 10px;
+  }
+}
